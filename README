@@ -1,5 +1,5 @@
-This code is for an arduino that it trying to program a microcontroller that only has a single pin for data in.
+This code is for an arduino to program a microcontroller that only has a single pin for data in.
 
-The specific chip I was using was  a XICOR X24C44 so the instructions that the arduino will send work only for that chip.
+The specific chip I was using was a XICOR X24C44 so the instructions that the arduino will send work only for that chip.
 
 www.datasheetcatalog.org/datasheet/Xicor/mXyyzyrw.pdf
