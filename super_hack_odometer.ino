@@ -1,9 +1,9 @@
 #include <stdint.h>
 
-#define CE 7
-#define SK 6
-#define DI 5
-#define DO 4
+#define CE 8
+#define SK 9
+#define DI 10
+#define DO 11
 
 void setup() {
     pinMode(CE, OUTPUT);
@@ -17,33 +17,41 @@ void setup() {
     
     pinMode(DO, INPUT);
     
-    Serial.begin(115200);
+    Serial.begin(4800);
 }
 
-void pin(String value) {
-  if (value = "HIGH"){
+void pin(bool value) {
+  if (value){
     digitalWrite(DI,HIGH);
+    Serial.print("ONE-");
   } else {
-    digitalWrite(DI,LOW);}
+    digitalWrite(DI,LOW);
+    Serial.print("ZERO-");}
+
+  delay(200);
   digitalWrite(SK, HIGH);
+  Serial.print("--CLOCK--");
+  delay(200);
   digitalWrite(SK, LOW);
 }
 
 void Rcl(){
-  pin("HIGH");  
-  pin("HIGH");
-  pin("HIGH");
-  pin("LOW");
-  pin("HIGH");
-  pin("HIGH");
-  pin("LOW");
-  pin("HIGH");
+  pin(true);  
+  pin(true);
+  pin(true);
+  pin(false);
+  pin(true);
+  pin(true);
+  pin(false);
+  pin(true);
+  Serial.println();
 }
 
 void Read(){
-    pin("HIGH");
-    pin("HIGH");
-    pin("HIGH");
+    pin(true);
+    pin(true);
+    pin(true);
+    Serial.println();
 }
 
 
@@ -63,28 +71,33 @@ uint16_t readByte() {
   
 
 void loop() {
-  uint8_t addr[16];
-  for (int i = 0; i<16; i++){
-    addr[i] = i;}
-  Rcl();
-  for (int count = 0; count < 15; count++){
-      pin("HIGH");
+    uint8_t addr[16];
+    Rcl();
+    for (int count = 0; count < 16; count++){
+      addr[count] = count;
+      pin(true);
       int i = 0;
-      uint8_t mask = 0x1000;
-      while (i < 3){
-        if (addr[count] && mask){
-          pin("HIGH");
+      uint8_t mask = 0x8;
+      while (i < 4){
+        if ((addr[count] & mask) != 0){
+          pin(true);
         } else {
-          pin("LOW");
+          pin(false);
         }
         mask = mask >> 1;
         i++;
       }
       Read();
       uint16_t b = readByte();
+     /* Serial.print("0x");
+      Serial.print(addr[count]);
+      Serial.print(": ");
       Serial.print(b, HEX);
-      Serial.print(" ");
+      Serial.print(" "); */
   }
+ /* delay(2000);
+  Serial.println();
+  Serial.println(); */
 }
       
     
